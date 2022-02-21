@@ -3,7 +3,6 @@
 from PIL import Image
 from color.img2txt import draw_with_color
 import os, random, sys
-import subprocess
 import time
 
 def img_average(x1, y1, x2, y2, img):
@@ -49,6 +48,15 @@ def draw(img_path, post_info):
     print(post_info['caption'])
     print('-------------------\n')
 
+# def display_to_terminal(posts_info, display_color):
+#     file_list = os.listdir('./images/')
+#     for filename in file_list:
+#         img_path = './images/' + filename
+#         if display_color:
+#             draw_with_color(img_path, posts_info[filename])
+#             time.sleep(2)
+#         else:
+#             draw(img_path, posts_info[filename])
 def display_to_terminal(posts_info, display_color):
     file_list = os.listdir('./images/')
     for filename in file_list:

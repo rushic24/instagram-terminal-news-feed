@@ -3,9 +3,9 @@
 # Modified from https://github.com/hit9/img2txt/blob/gh-pages/img2txt.py
 
 import sys
-import color.ansi
 from PIL import Image
 from color.graphics_util import alpha_blend
+from pixcat import Image as pixImage
 
 def load_and_resize_image(imgname, antialias, maxLen, aspectRatio):
 
@@ -44,18 +44,26 @@ def load_and_resize_image(imgname, antialias, maxLen, aspectRatio):
     return img
 
 
+# def draw_with_color(img_path, post_info):
+#     maxLen, fontSize, target_aspect_ratio = 100.0, 7, 0.3
+#     img = load_and_resize_image(img_path, None, maxLen, target_aspect_ratio)
+#     # get pixels
+#     pixel = img.load()
+#     print('username: ' + post_info['username'])
+#     print('\033[4m' + post_info['site_url'] + '\033[0m \n')
+#     width, height = img.size
+#     sys.stdout.write(
+#         color.ansi.generate_ANSI_from_pixels(pixel, width, height, None)[0])
+#     sys.stdout.write("\x1b[0m\n")
+#     sys.stdout.flush()
+#     print('Likes: ' + post_info['likes'])
+#     print(post_info['caption'])
+#     print('-------------------\n')
+
 def draw_with_color(img_path, post_info):
-    maxLen, fontSize, target_aspect_ratio = 100.0, 7, 0.3
-    img = load_and_resize_image(img_path, None, maxLen, target_aspect_ratio)
-    # get pixels
-    pixel = img.load()
+    pixImage(img_path).resize(480, 480, 480, 480).show()
     print('username: ' + post_info['username'])
     print('\033[4m' + post_info['site_url'] + '\033[0m \n')
-    width, height = img.size
-    sys.stdout.write(
-        color.ansi.generate_ANSI_from_pixels(pixel, width, height, None)[0])
-    sys.stdout.write("\x1b[0m\n")
-    sys.stdout.flush()
     print('Likes: ' + post_info['likes'])
     print(post_info['caption'])
     print('-------------------\n')

@@ -26,8 +26,10 @@ def fetch_news_feed(session):
         exit()
     res = json.loads(res.text)
     posts_info = {}
-    for item in res['items']:
-        if 'user' not in item: continue
+    print('res fetching')
+    for item in res['feed_items']:
+        if 'user' not in item.get('media_or_ad'): continue
+        item = item['media_or_ad']
         username = item['user']['username']
         key = username + '_' +  str(item['taken_at']) + '.jpg'
         try:
@@ -71,6 +73,7 @@ def get_login_session(credential):
     session.headers.update({'Referer': 'https://www.instagram.com/'})
     req = session.get('https://www.instagram.com/')
     session.headers.update({'X-CSRFToken': req.cookies['csrftoken']})
+    # print(f"credential is {credential}")
     login_response = session.post('https://www.instagram.com/accounts/login/ajax/', data=credential, allow_redirects=True).json()
     if 'two_factor_required' in login_response and login_response['two_factor_required']:
         identifier = login_response['two_factor_info']['two_factor_identifier']
@@ -92,8 +95,9 @@ def login(credential):
     user, pwd = '', ''
     while True:
         user = input('Username: ')
-        pwd = getpass.getpass(prompt='Password: ')
-        session, res = get_login_session({'username': user, 'password': pwd})
+        # refer readme for enc_password
+        pwd = getpass.getpass(prompt='enc_password: ')
+        session, res = get_login_session({'username': user, 'enc_password': pwd, 'optIntoOneTap': 'false'})
         if res['authenticated']:
             break
         if not res['authenticated']:
